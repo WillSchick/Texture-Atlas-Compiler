@@ -12,7 +12,7 @@ Run the script using Python's interpreter:
   ```
   py Texture-Atlas-Compiler
   ```
-This will take .png and .jpg files stored in the "Input" directory, and generate a formatted texture atlas which is then placed in the "Output" directory.  
+This will take .png and .jpg files stored in the "Input" directory, and generate a formatted texture atlas which is then placed in the "Output" directory. If no "Input" or "Output" directory is found, the script will instead take from the current working directory, and create an atlas image in the current working directory as well.
 
 # Configuration file
 The "config.txt" file contains the foolowing settings for the Texture-Atlas-Compiler:
