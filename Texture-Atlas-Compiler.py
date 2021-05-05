@@ -17,22 +17,32 @@ def getTextureSize():
 		splitLine = line.split("x")
 		return (int(splitLine[0].strip(" ")), int(splitLine[1].strip(" ")))
 
+
+# Raises an error if no jpg or png files were found 
+def fileCountError(fileCount):
+	if (fileCount == 0):
+		raise FileNotFoundError("No files with '.png' or '.jpg' files found! \n Check the readme for more info")
+
+
 # Returns number of valid image files in Input
-def getNumImages():
+def getNumImages(inputPath):
 	fileCount = 0
-	for filename in os.listdir('./Input'):
+	for filename in os.listdir(inputPath):
 		# Only include PNGs and JPGs
 		if (filename.lower().endswith('.png') or filename.lower().endswith('.jpg')):
 			fileCount += 1
+	fileCountError(fileCount)
 	return fileCount
 	
+	
 # returns width and height of texture atlas bassed on 
-def getAtlasResolution(TEXTURE_WIDTH, TEXTURE_HEIGHT):
-	imageCount = getNumImages()
+def getAtlasResolution(TEXTURE_WIDTH, TEXTURE_HEIGHT, inputPath):
+	imageCount = getNumImages(inputPath)
 	outputColumns = math.ceil(math.sqrt(imageCount))
 	outputRows = math.ceil(math.sqrt(imageCount))
 	
 	return (outputColumns * TEXTURE_WIDTH, outputRows * TEXTURE_HEIGHT)
+
 
 def resampleParse(mode):
 	if (mode == "NEAREST"):
@@ -57,20 +67,19 @@ def getResampleMode() :
 		line = line.strip("resample_mode:")
 		line = line.strip()
 		line = line.upper()
-		
 	return resampleParse(line)
-		
 
 
 # Return an array of resized textures
-def makeTextures(TEXTURE_SIZE):
+def makeTextures(TEXTURE_SIZE, inputPath):
 	outputTextures = []
-	for filename in os.listdir('./Input'):
+	for filename in os.listdir(inputPath):
 		if (filename.lower().endswith('.png') or filename.lower().endswith('.jpg')):
-			image = Image.open(os.path.join('Input', filename))
+			image = Image.open(os.path.join(inputPath, filename))
 			image = image.resize(TEXTURE_SIZE, resample=getResampleMode())
 			outputTextures.append(image)
 	return outputTextures
+
 
 # Takes in textures and returns an atlas
 def generateAtlas(textures, ATLAS_SIZE, TEXTURE_SIZE):
@@ -88,25 +97,41 @@ def generateAtlas(textures, ATLAS_SIZE, TEXTURE_SIZE):
 			
 	return atlas
 
+
+# If directory of string exists in current working directory, return path of that directory
+# otherwise return working directory
+def getPathIfDirectory(directoryName):
+	cwdPath = os.getcwd()
+	dirPath = os.path.join(cwdPath, directoryName)
+	
+	if (os.path.isdir(dirPath)):
+		return dirPath
+	else:
+		return cwdPath
+
 def main():
 	# CONSTANTS
 	TEXTURE_SIZE = getTextureSize()
 	TEXTURE_WIDTH = TEXTURE_SIZE[0]
 	TEXTURE_HEIGHT = TEXTURE_SIZE[1]
+	
+	# Paths
+	inputPath = getPathIfDirectory("Input")
+	outputPath = getPathIfDirectory("Output")
 
 	# Width of Atlas (power of 2)
-	ATLAS_SIZE = getAtlasResolution(TEXTURE_WIDTH, TEXTURE_HEIGHT)
+	ATLAS_SIZE = getAtlasResolution(TEXTURE_WIDTH, TEXTURE_HEIGHT, inputPath)
 	ATLAS_WIDTH = ATLAS_SIZE[0]
 	ATLAS_HEIGHT = ATLAS_SIZE[1]
 	
 	# Create textures array
 	textures = []
-	textures = makeTextures(TEXTURE_SIZE)
+	textures = makeTextures(TEXTURE_SIZE, inputPath)
 	
 	# Create atlas
 	atlas = generateAtlas(textures, ATLAS_SIZE, TEXTURE_SIZE)
 	
 	# Save the newly created Atlas
-	atlas.save(os.path.join('Output', 'Atlas.png'))
-	
+	atlas.save(os.path.join(outputPath, 'Atlas.png'))
+
 main()
