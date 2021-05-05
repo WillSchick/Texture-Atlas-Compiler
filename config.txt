@@ -1,0 +1,6 @@
+# The size to adjust each image before assembling the atlas
+texture_resolution: 64 x 64
+
+# The mode for resampling when resizing each texture.
+# Options: NEAREST , BICUBIC , LANCZOS , HAMMING
+resample_mode: NEAREST
