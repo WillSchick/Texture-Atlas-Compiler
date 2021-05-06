@@ -4,3 +4,7 @@ texture_resolution: 64 x 64
 # The mode for resampling when resizing each texture.
 # Options: NEAREST , BICUBIC , LANCZOS , HAMMING
 resample_mode: NEAREST
+
+# The aspect ratio for the generated Atlas (check readme for more info on each option)
+# Options: SQUARE, LINE, OPTIMAL
+atlas_aspect_ratio: OPTIMAL

@@ -33,15 +33,56 @@ def getNumImages(inputPath):
 			fileCount += 1
 	fileCountError(fileCount)
 	return fileCount
+
+
+def fetchAspectRatioMode():
+	with open('config.txt', 'r') as config:
+		line = config.readline()
+		while ("atlas_aspect_ratio:" not in line):
+			line = config.readline()
+		line = line.lstrip("atlas_aspect_ratio:")
+		return line.strip().upper()
+
+# returns resolution of atlas as a square, in which the dimensions are a power of two
+def powerOfTwoAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount):
+	outputColumns = math.ceil(math.sqrt(imageCount))
+	outputRows = math.ceil(math.sqrt(imageCount))
+	return (outputColumns * TEXTURE_WIDTH, outputRows * TEXTURE_HEIGHT)
+
+# returns resolution of atlas with a single row
+def nByOneAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount):
+	outputColumns = imageCount
+	outputRows = 1
+	return (outputColumns * TEXTURE_WIDTH, outputRows * TEXTURE_HEIGHT) 
 	
+# Returns resolution of atlas with the smallest perimeter 
+def optimalAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount):
+	outputColumns = imageCount
+	outputRows = 1
 	
+	for possibleRows in range(1, imageCount):
+		for possibleColumns in range(1, imageCount):
+			if ((possibleColumns * possibleRows) == imageCount and 
+				abs(outputColumns - outputRows) > abs(possibleColumns - possibleRows)):
+				outputColumns = possibleColumns
+				outputRows = possibleRows
+	
+	return (outputColumns * TEXTURE_WIDTH, outputRows * TEXTURE_HEIGHT)
+	
+
 # returns width and height of texture atlas bassed on 
 def getAtlasResolution(TEXTURE_WIDTH, TEXTURE_HEIGHT, inputPath):
 	imageCount = getNumImages(inputPath)
-	outputColumns = math.ceil(math.sqrt(imageCount))
-	outputRows = math.ceil(math.sqrt(imageCount))
+	mode = fetchAspectRatioMode()
 	
-	return (outputColumns * TEXTURE_WIDTH, outputRows * TEXTURE_HEIGHT)
+	if (mode == "SQUARE"):
+		return powerOfTwoAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount)
+	elif (mode == "LINE"):
+		return nByOneAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount)
+	elif (mode == "OPTIMAL"):
+		return optimalAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount)
+	else: 
+		print("Atlas aspect ratio could not be parsed: " + mode)
 
 
 def resampleParse(mode):

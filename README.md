@@ -21,3 +21,10 @@ The "config.txt" file contains the following settings for the Texture-Atlas-Comp
   - resample_mode: `mode`
     - The mode for resampling when resizing each texture.
     - Modes: NEAREST , BICUBIC , LANCZOS , HAMMING 
+  - atlas_aspect_ratio: `mode`
+	- The aspect ratio of the atlas to be generated
+	- Modes:
+		- SQUARE : (The atlas's dimensions will always be a power of two)
+		- LINE : (The atlas will have a height of one texture, and will expand only by width)
+		- OPTIMAL : (The atlas will generate only enough space as needed to fit all textures)
+		
