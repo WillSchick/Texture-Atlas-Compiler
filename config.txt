@@ -6,5 +6,5 @@ texture_resolution: 64 x 64
 resample_mode: NEAREST
 
 # The aspect ratio for the generated Atlas (check readme for more info on each option)
-# Options: SQUARE, LINE, OPTIMAL
-atlas_aspect_ratio: OPTIMAL
+# Options: SQUARE, LINE, OPTIMAL, GENEROUS_OPTIMAL
+atlas_aspect_ratio: GENEROUS_OPTIMAL

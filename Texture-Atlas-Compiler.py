@@ -56,7 +56,8 @@ def nByOneAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount):
 	return (outputColumns * TEXTURE_WIDTH, outputRows * TEXTURE_HEIGHT) 
 	
 # Returns resolution of atlas with the smallest perimeter 
-def optimalAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount):
+# Quasi-recursive if the number is prime
+def optimalAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount, generous):
 	outputColumns = imageCount
 	outputRows = 1
 	
@@ -66,6 +67,10 @@ def optimalAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount):
 				abs(outputColumns - outputRows) > abs(possibleColumns - possibleRows)):
 				outputColumns = possibleColumns
 				outputRows = possibleRows
+	
+	# Recursive case: imageCount is prime and therefore could possibly be incredibly long
+	if (generous and outputRows <= 1):
+		return optimalAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount + 1, generous)
 	
 	return (outputColumns * TEXTURE_WIDTH, outputRows * TEXTURE_HEIGHT)
 	
@@ -80,8 +85,10 @@ def getAtlasResolution(TEXTURE_WIDTH, TEXTURE_HEIGHT, inputPath):
 	elif (mode == "LINE"):
 		return nByOneAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount)
 	elif (mode == "OPTIMAL"):
-		return optimalAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount)
-	else: 
+		return optimalAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount, false)
+	elif (mode == "GENEROUS_OPTIMAL"):
+		return optimalAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount, true)
+	else:
 		print("Atlas aspect ratio could not be parsed: " + mode)
 
 

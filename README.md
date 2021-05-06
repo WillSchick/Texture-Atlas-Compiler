@@ -31,4 +31,4 @@ The "config.txt" file contains the following settings for the Texture-Atlas-Comp
 		- SQUARE : (The atlas's dimensions will always be a power of two)
 		- LINE : (The atlas will have a height of one texture, and will expand only by width)
 		- OPTIMAL : (The atlas will generate only enough space as needed to fit all textures)
-		
+		- GENEROUS_OPTIMAL : (Similar to optimal, but will add an extra blank texture if the number of textures is prime)
