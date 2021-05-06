@@ -20,7 +20,11 @@ The "config.txt" file contains the following settings for the Texture-Atlas-Comp
     - The resolution of each texture. Textures above or below this resolution will be scaled up or down.  
   - resample_mode: `mode`
     - The mode for resampling when resizing each texture.
-    - Modes: NEAREST , BICUBIC , LANCZOS , HAMMING 
+    - Modes: 
+    	- NEAREST 
+    	- BICUBIC 
+    	- LANCZOS 
+    	- HAMMING 
   - atlas_aspect_ratio: `mode`
 	- The aspect ratio of the atlas to be generated
 	- Modes:
