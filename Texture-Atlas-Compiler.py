@@ -85,9 +85,9 @@ def getAtlasResolution(TEXTURE_WIDTH, TEXTURE_HEIGHT, inputPath):
 	elif (mode == "LINE"):
 		return nByOneAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount)
 	elif (mode == "OPTIMAL"):
-		return optimalAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount, false)
+		return optimalAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount, False)
 	elif (mode == "GENEROUS_OPTIMAL"):
-		return optimalAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount, true)
+		return optimalAspectRatio(TEXTURE_WIDTH, TEXTURE_HEIGHT, imageCount, True)
 	else:
 		print("Atlas aspect ratio could not be parsed: " + mode)
 
