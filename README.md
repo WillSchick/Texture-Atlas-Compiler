@@ -4,7 +4,7 @@ A script used to compile multiple texture image files into an Atlas primarily fo
 # Set-up
 Texture-Atlas-Compiler uses PIL, which can be downloaded with pip by using:
   ```
-  pip install Pillow
+  python -m pip install Pillow
   ```
 
 # Usage
